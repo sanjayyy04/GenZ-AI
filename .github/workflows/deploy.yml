@@ -1,52 +1,69 @@
-name: Deploy React to github pages
+name: Deploy React to GitHub Pages
+
 on:
   push:
     branches:
       - main
-
     paths-ignore:
       - ".github/workflows/*"
-      - README.md
+      - "README.md"
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
+    name: 🏗️ Build React App
     runs-on: ubuntu-latest
+
     steps:
-      - name: Get Code
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v4
-      - name: Install Node 20
+
+      - name: 🧰 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
-      - name: Cache Dependencies
+          node-version: 20
+
+      - name: ⚡ Cache Dependencies
         uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-      - name: Install Dependencies
+
+      - name: 📦 Install Dependencies
         run: npm ci
-      - name: Build Project
+
+      - name: 🔑 Inject Gemini API Key
+        run: echo "VITE_GEMINI_API_KEY=${{ secrets.VITE_GEMINI_API_KEY }}" >> $GITHUB_ENV
+
+      - name: 🏗️ Build Project
         run: npm run build
-      - name: Upload Dist Artifact
+
+      - name: 📤 Upload Build Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
           path: dist
+
   deploy:
+    name: 🚀 Deploy to GitHub Pages
     needs: build
     runs-on: ubuntu-latest
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
-    permissions:
-      pages: write # to deploy to Pages
-      id-token: write # to verify the deployment originates from an appropriate source
 
-    # Deploy to the github-pages environment
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Deploy to GitHub Pages
+      - name: 📦 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
