@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #212121;
+    color: white;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    /* font-weight: <weight>; */
+    font-style: normal;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgb(2 240 219);
+    color: black;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    margin: 0;
+}
+
+header nav ul li:first-child {
+    font-size: 30px;
+    font-weight: bold;
+    font-family: "Bitcount Single Ink", system-ui;
+    font-optical-sizing: auto;
+    /* font-weight: <weight>; */
+    font-style: normal;
+    font-variation-settings:
+        "slnt" 0,
+        "CRSV" 0.5,
+        "ELSH" 0,
+        "ELXP" 0,
+        "SZP1" 0,
+        "SZP2" 0,
+        "XPN1" 0,
+        "XPN2" 0,
+        "YPN1" 0,
+        "YPN2" 0;
+}
+
+.input_box {
+    background-color: #303030;
+    color: rgb(255, 253, 253);
+    position: fixed;
+    z-index: 1000;
+    bottom: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 13px 20px 12px 20px;
+    border-radius: 50px;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    width: 53%;
+    box-shadow: 0 0px 5px rgb(163, 163, 163);
+}
+
+.input_box:focus-within {
+    box-shadow: 0 0 15px rgba(69, 241, 227, 0.511);
+}
+
+.auto-textarea {
+    width: 90%;
+    resize: none;
+    /* user can’t drag to resize */
+    overflow: hidden;
+    /* hides scrollbar */
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    background: rgb(48 48 48);
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.input_box button {
+    background-color: rgb(48 48 48);
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 0px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        scale: 1.1;
+    }
+}
+
+.input_box button img {
+    width: 30px;
+    height: 30px;
+}
+
+
+.welcome-msg {
+    margin-top: 200px;
+    font-size: 24px;
+    background: linear-gradient(45deg, red, rgb(226, 5, 5), rgb(2, 250, 221), blue);
+    background-clip: text;
+    color: transparent;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+}
+
+.ans-msg {
+    /* background: rebeccapurple; */
+    /* color: #ffffff; */
+    padding: 4% 22.5%;
+    position: fixed;
+    top: 8%;
+    /* z-index: 1000000000000000; */
+    overflow-y: scroll;
+    overflow-x: auto;
+    z-index: 999;
+    height: 70vh;
+    backdrop-filter: blur(9px);
+}
