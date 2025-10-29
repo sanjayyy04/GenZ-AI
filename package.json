@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-   "homepage": "https://sanjayyy04.github.io/GenZ-AI/",
+   "homepage": "https://sanjayyy04.github.io/GenZ-AI",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
