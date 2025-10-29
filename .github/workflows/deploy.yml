@@ -1,37 +1,73 @@
-name: build and deploy
-
+name: Deploy React to github pages
 on:
   push:
     branches:
       - main
 
-permissions:
-  contents: write      # required for deploying to gh-pages
+    paths-ignore:
+      - ".github/workflows/*"
+      - README.md
+  workflow_dispatch:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Get Code
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
+      - name: Install Node 22
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-
-      - name: Install dependencies
-        run: npm ci
-
-        # 4️⃣ Build the app (inject the Gemini API key from secrets)
-      - name: Build project
-        env:
-          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
-        run: npm run build
-
-     # 5️⃣ Deploy the build to GitHub Pages
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+          node-version: 22
+      - name: Cache Dependencies
+        uses: actions/cache@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run Tests
+        run: npm run test
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Install Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      - name: Install Dependencies
+        run: npm ci
+      - name: Build Project
+        run: npm run build
+      - name: Upload Dist Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{secrets.VITE_GEMINI_API_KEY}}
