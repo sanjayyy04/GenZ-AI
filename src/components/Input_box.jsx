@@ -2,8 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import { API_URL, API_KEY } from "./constant";
 import "/src/App.css";
 
-const Input_box = ({ setResponseText }) => {
-  const [input_val, setInput] = useState("");
+const Input_box = ({
+  setResponseText,
+  input_val,
+  setInput,
+  history,
+  sethistory,
+}) => {
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -13,7 +18,6 @@ const Input_box = ({ setResponseText }) => {
     }
   }, [input_val]);
 
-  
   const fetchData = async (input) => {
     if (!input.trim()) return;
 
@@ -31,19 +35,34 @@ const Input_box = ({ setResponseText }) => {
       const data = await response.json();
       console.log("Gemini Response:", data);
 
-      const textResponse =
+      let textResponse =
         data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        "⚠️ No text response from Gemini.";
+        " No text response from Gemini.";
 
-      // ✅ Send the response up to App.jsx
+      //  Format the response text
+      textResponse = textResponse
+        .split("* ") // split on "* "
+        .map((item) => item.trim()) // remove extra spaces
+        .filter((item) => item !== "") // ignore empty parts
+        .join("\n "); // join back with bullet symbols
+
+      //  Add this conversation to history
+      const newEntry = { user: input, ai: textResponse };
+      sethistory([...history, newEntry]);
+
+      //  Send the formatted response up to App.jsx
       setResponseText(textResponse);
       setInput("");
     } catch (error) {
       console.error("Error fetching data:", error);
-      setResponseText("❌ Error connecting to the Gemini API.");
+      setResponseText(" Error connecting to the Gemini API.");
+      const errorEntry = {
+        user: input,
+        ai: "❌ Error connecting to the Gemini API.",
+      };
+      sethistory([...history, errorEntry]);
     }
   };
-  
 
   return (
     <div className="input_box_container">
@@ -56,8 +75,8 @@ const Input_box = ({ setResponseText }) => {
           rows={1}
           className="auto-textarea"
         />
-        <button onClick={() => fetchData(input_val)}>
-          <img src="../src/assets/search.png" alt="send" />
+        <button onClick={() => fetchData(input_val)} disabled={!input_val}>
+          <img src="./src/assets/search.png" alt="send" />
         </button>
       </div>
     </div>

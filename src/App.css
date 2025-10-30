@@ -131,3 +131,42 @@ header nav ul li:first-child {
     height: 70vh;
     backdrop-filter: blur(9px);
 }
+
+.heading {
+    font-size: 25px;
+    /* position: relative; */
+    top: 68px;
+    display: block;
+    margin-top: 32px;
+    margin-bottom: -18px;
+}
+
+.chat-history {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 20px;
+}
+
+.chat-entry {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 12px 16px;
+    backdrop-filter: blur(12px);
+}
+
+.user-msg {
+    color: #00bcd4;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.ai-msg {
+    color: #eaeaea;
+    line-height: 1.5;
+}
+
+.heading {
+    font-size: 18px;
+    font-weight: 600;
+}
