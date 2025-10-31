@@ -4,30 +4,25 @@ import "/src/App.css";
 const Main_body = ({ history, loading }) => {
   const formatText = (text) => {
     if (!text) return "";
-    return (
-      text
-        // Main heading → **text**
-        .replace(
-          /\*\*(.*?)\*\*/g,
-          "<br><strong class='heading'>$1</strong><br>"
-        )
-        // Subheading → *text*
-        .replace(
-          /\*\*(.*?)\*/g,
-          "<br><strong class='sub-heading'>$1</strong><br>"
-        )
-        // Bullet points
-        .replace(/\n• /g, "<br>• ")
-        // Line breaks
-        .replace(/\n/g, "<br>")
-        .trim()
-    );
+    return text
+      .replace(/\*\*(.*?)\*\*/g, "<br><strong class='heading'>$1</strong><br>")
+      .replace(
+        /\*\*(.*?)\*/g,
+        "<br><strong class='sub-heading'>$1</strong><br>"
+      )
+      .replace(/\n• /g, "<br>• ")
+      .replace(/\n/g, "<br>")
+      .trim();
   };
 
   return (
     <div className="main-body">
       {loading ? (
-        <div className="loading-indicator">Loading...</div>
+        <div className="loading-indicator">
+          <div className="dot dot1"></div>
+          <div className="dot dot2"></div>
+          <div className="dot dot3"></div>
+        </div>
       ) : history && history.length > 0 ? (
         <div className="chat-container ans-msg">
           {history.map((item, index) => (

@@ -7,12 +7,9 @@ const Input_box = ({
   setInput,
   history,
   setHistory,
-  loading,
   setloading,
 }) => {
   const textareaRef = useRef(null);
-
-  console.log("Input Box Loading State:", loading);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -21,9 +18,10 @@ const Input_box = ({
     }
   }, [input_val]);
 
-  setloading(true);
   const fetchData = async (input) => {
     if (!input.trim()) return;
+
+    setloading(true); //  start loader
 
     try {
       const response = await fetch(`${API_URL}?key=${API_KEY}`, {
@@ -39,7 +37,7 @@ const Input_box = ({
 
       let textResponse =
         data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        " No text response from GenZ AI.";
+        "No text response from GenZ AI.";
 
       textResponse = textResponse
         .split("* ")
@@ -47,21 +45,21 @@ const Input_box = ({
         .filter((item) => item !== "")
         .join("\n ");
 
-      //  Add this conversation to history
       const newEntry = { user: input, ai: textResponse };
-      setHistory([...history, newEntry]);
+      setHistory((prev) => [...prev, newEntry]);
       setInput("");
     } catch (error) {
       console.error("Error fetching data:", error);
       const errorEntry = {
         user: input,
-        ai: " THere was an error processing your request. Please try again...",
+        ai: "There was an error processing your request. Please try again...",
       };
-      setHistory([...history, errorEntry]);
+      setHistory((prev) => [...prev, errorEntry]);
       setInput("");
+    } finally {
+      setloading(false); // ✅ stop loader when done
     }
   };
-  setloading(false);
 
   return (
     <div className="input_box_container">

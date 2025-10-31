@@ -219,6 +219,48 @@ header nav ul li:first-child {
     font-weight: 500;
 }
 
+/* ---------------- Loading Animation ---------------- */
+.loading-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    gap: 10px;
+}
+
+.dot {
+    width: 14px;
+    height: 14px;
+    background-color: #02f0db;
+    border-radius: 50%;
+    animation: bounce 1.2s infinite ease-in-out;
+}
+
+.dot1 {
+    animation-delay: 0s;
+}
+
+.dot2 {
+    animation-delay: 0.2s;
+}
+
+.dot3 {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+    }
+
+    40% {
+        transform: scale(1);
+    }
+}
+
 /* ---------------- Mobile Responsive ---------------- */
 @media (max-width: 768px) {
     header nav ul {

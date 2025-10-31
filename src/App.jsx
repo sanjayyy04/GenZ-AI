@@ -7,12 +7,12 @@ import "./App.css";
 const App = () => {
   const [history, setHistory] = useState([]); // store all chats
   const [input_val, setInput] = useState("");
-  const [loading, setloading] = useState("true");
+  const [loading, setloading] = useState(false); //  should be false (boolean)
 
   return (
     <div>
       <Header />
-      <Main_body history={history} loading={loading} setloading={setloading} />
+      <Main_body history={history} loading={loading} />
       <Input_box
         input_val={input_val}
         setInput={setInput}
