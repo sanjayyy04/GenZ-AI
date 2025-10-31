@@ -5,27 +5,21 @@ import Main_body from "./components/Main_body.jsx";
 import "./App.css";
 
 const App = () => {
-  //  Shared state between Input_box and Main_body
-  const [responseText, setResponseText] = useState("");
+  const [history, setHistory] = useState([]); // store all chats
   const [input_val, setInput] = useState("");
-  //to store the chat history
-  const [history, sethistory] = useState([]);
+  const [loading, setloading] = useState("true");
 
   return (
     <div>
       <Header />
-      <Main_body
-        responseText={responseText}
-        input_val={input_val}
-        setInput={setInput}
-        history={history}
-      />
+      <Main_body history={history} loading={loading} setloading={setloading} />
       <Input_box
-        setResponseText={setResponseText}
         input_val={input_val}
         setInput={setInput}
         history={history}
-        sethistory={sethistory}
+        setHistory={setHistory}
+        loading={loading}
+        setloading={setloading}
       />
     </div>
   );

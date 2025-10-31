@@ -1,3 +1,4 @@
+/* ---------------- Base ---------------- */
 body {
     margin: 0;
     padding: 0;
@@ -5,8 +6,15 @@ body {
     color: white;
     font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
-    /* font-weight: <weight>; */
     font-style: normal;
+    scroll-behavior: smooth;
+}
+
+/* ---------------- Header ---------------- */
+
+*::selection {
+    background: rgba(2, 240, 220, 0.947);
+    color: black;
 }
 
 header {
@@ -14,8 +22,9 @@ header {
     top: 0;
     width: 100%;
     z-index: 1000;
-    background-color: rgb(2 240 219);
+    background-color: rgb(2, 240, 219);
     color: black;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
 }
 
 header nav ul {
@@ -31,71 +40,57 @@ header nav ul li:first-child {
     font-size: 30px;
     font-weight: bold;
     font-family: "Bitcount Single Ink", system-ui;
-    font-optical-sizing: auto;
-    /* font-weight: <weight>; */
     font-style: normal;
-    font-variation-settings:
-        "slnt" 0,
-        "CRSV" 0.5,
-        "ELSH" 0,
-        "ELXP" 0,
-        "SZP1" 0,
-        "SZP2" 0,
-        "XPN1" 0,
-        "XPN2" 0,
-        "YPN1" 0,
-        "YPN2" 0;
 }
 
+/* ---------------- Input Box ---------------- */
 .input_box {
     background-color: #303030;
-    color: rgb(255, 253, 253);
+    color: #fff;
     position: fixed;
     z-index: 1000;
     bottom: 2%;
     left: 50%;
     transform: translateX(-50%);
-    padding: 13px 20px 12px 20px;
+    padding: 13px 20px;
     border-radius: 50px;
     display: flex;
-    /* flex-direction: column; */
     align-items: center;
     width: 53%;
-    box-shadow: 0 0px 5px rgb(163, 163, 163);
+    box-shadow: 0 0 5px rgb(163, 163, 163);
+    transition: all 0.2s ease;
 }
 
 .input_box:focus-within {
-    box-shadow: 0 0 15px rgba(69, 241, 227, 0.511);
+    box-shadow: 0 0 15px rgba(69, 241, 227, 0.5);
 }
 
 .auto-textarea {
     width: 90%;
     resize: none;
-    /* user can’t drag to resize */
     overflow: hidden;
-    /* hides scrollbar */
     border: none;
     outline: none;
     font-size: 1rem;
     line-height: 1.5rem;
-    background: rgb(48 48 48);
+    background: #303030;
     color: #fff;
     transition: all 0.2s ease;
 }
 
 .input_box button {
-    background-color: rgb(48 48 48);
+    background-color: #303030;
     border: none;
-    color: rgb(255, 255, 255);
-    padding: 0px 15px;
+    color: #fff;
+    padding: 0 15px;
     margin-left: 10px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+}
 
-    &:hover {
-        scale: 1.1;
-    }
+.input_box button:hover {
+    transform: scale(1.1);
 }
 
 .input_box button img {
@@ -103,44 +98,67 @@ header nav ul li:first-child {
     height: 30px;
 }
 
-
+/* ---------------- Welcome Message ---------------- */
 .welcome-msg {
     margin-top: 200px;
     font-size: 24px;
     background: linear-gradient(45deg, red, rgb(226, 5, 5), rgb(2, 250, 221), blue);
     background-clip: text;
+    -webkit-background-clip: text;
     color: transparent;
     display: flex;
     align-items: center;
     flex-direction: column;
-    flex-wrap: wrap;
     justify-content: center;
     text-align: center;
 }
 
-.ans-msg {
-    /* background: rebeccapurple; */
-    /* color: #ffffff; */
-    padding: 4% 22.5%;
-    position: fixed;
-    top: 8%;
-    /* z-index: 1000000000000000; */
+.chat-container {
+    margin-top: 6%;
+    /* background: red; */
+    padding: 0 23%;
+    height: 80vh;
     overflow-y: scroll;
-    overflow-x: auto;
+    position: fixed;
+}
+
+/* ---------------- Answer Area ---------------- */
+.ans-msg {
+    padding: 2% 22.5%;
+    position: fixed;
+    top: -4%;
+    overflow-y: scroll;
+    overflow-x: hidden;
     z-index: 999;
-    height: 70vh;
+    height: calc(100vh - 132px);
     backdrop-filter: blur(9px);
+    animation: fadeIn 0.4s ease;
 }
 
-.heading {
-    font-size: 25px;
-    /* position: relative; */
-    top: 68px;
-    display: block;
-    margin-top: 32px;
-    margin-bottom: -18px;
+/* Smooth fade-in for responses */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
+/* Custom scrollbar */
+.ans-msg::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ans-msg::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+/* ---------------- Chat Message Styles ---------------- */
 .chat-history {
     display: flex;
     flex-direction: column;
@@ -153,20 +171,92 @@ header nav ul li:first-child {
     border-radius: 16px;
     padding: 12px 16px;
     backdrop-filter: blur(12px);
+    margin-top: 20px;
 }
 
 .user-msg {
-    color: #00bcd4;
+    color: #000000;
     font-weight: 500;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    background: #02f0db;
+    padding: 12px 16px;
+    border-radius: 47px;
+    width: fit-content;
+    /* Text width only */
+    margin-left: auto;
+    /* Pushes it to the right */
+    display: flex;
+    align-items: end;
+    justify-content: end;
+    /* margin-top: 59px; */
 }
 
 .ai-msg {
     color: #eaeaea;
     line-height: 1.5;
+    background: #2c2929;
+    padding: 24px 20px 70px 63px;
+    border-radius: 20px;
 }
 
+/* ---------------- Headings ---------------- */
 .heading {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: 600;
+    margin-top: 28px;
+    display: block;
+    margin-bottom: -58px;
+    margin-left: -40px;
+}
+
+.sub-heading {
+    font-size: 18px;
+    margin-left: -22px;
+    margin-top: 3px;
+    margin-bottom: -42px;
+    display: block;
+    font-weight: 500;
+}
+
+/* ---------------- Mobile Responsive ---------------- */
+@media (max-width: 768px) {
+    header nav ul {
+        padding: 10px 20px;
+    }
+
+    .input_box {
+        width: 85%;
+        padding: 10px 15px;
+    }
+
+    .auto-textarea {
+        font-size: 0.95rem;
+    }
+
+    .ans-msg {
+        padding: 4% 10%;
+        height: calc(100vh - 160px);
+    }
+
+    .welcome-msg {
+        font-size: 20px;
+        margin-top: 160px;
+    }
+
+    .heading {
+        font-size: 18px;
+    }
+
+    .chat-container {
+        margin-top: 8%;
+    }
+}
+
+@media (max-width: 768px) {
+    .chat-container {
+        margin-top: 17%;
+        background: red;
+        padding: 0 5%;
+    }
 }

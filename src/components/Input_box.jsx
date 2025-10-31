@@ -1,15 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { API_URL, API_KEY } from "./constant";
 import "/src/App.css";
 
 const Input_box = ({
-  setResponseText,
   input_val,
   setInput,
   history,
-  sethistory,
+  setHistory,
+  loading,
+  setloading,
 }) => {
   const textareaRef = useRef(null);
+
+  console.log("Input Box Loading State:", loading);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -18,15 +21,14 @@ const Input_box = ({
     }
   }, [input_val]);
 
+  setloading(true);
   const fetchData = async (input) => {
     if (!input.trim()) return;
 
     try {
       const response = await fetch(`${API_URL}?key=${API_KEY}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: input }] }],
         }),
@@ -37,32 +39,29 @@ const Input_box = ({
 
       let textResponse =
         data?.candidates?.[0]?.content?.parts?.[0]?.text ||
-        " No text response from Gemini.";
+        " No text response from GenZ AI.";
 
-      //  Format the response text
       textResponse = textResponse
-        .split("* ") // split on "* "
-        .map((item) => item.trim()) // remove extra spaces
-        .filter((item) => item !== "") // ignore empty parts
-        .join("\n "); // join back with bullet symbols
+        .split("* ")
+        .map((item) => item.trim())
+        .filter((item) => item !== "")
+        .join("\n ");
 
       //  Add this conversation to history
       const newEntry = { user: input, ai: textResponse };
-      sethistory([...history, newEntry]);
-
-      //  Send the formatted response up to App.jsx
-      setResponseText(textResponse);
+      setHistory([...history, newEntry]);
       setInput("");
     } catch (error) {
       console.error("Error fetching data:", error);
-      setResponseText(" Error connecting to the Gemini API.");
       const errorEntry = {
         user: input,
-        ai: "❌ Error connecting to the Gemini API.",
+        ai: " THere was an error processing your request. Please try again...",
       };
-      sethistory([...history, errorEntry]);
+      setHistory([...history, errorEntry]);
+      setInput("");
     }
   };
+  setloading(false);
 
   return (
     <div className="input_box_container">
