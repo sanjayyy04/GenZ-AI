@@ -10,6 +10,48 @@ body {
     scroll-behavior: smooth;
 }
 
+/* ---------------- Layout ---------------- */
+.root-div {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Sidebar (Left Section) */
+.left {
+    width: 250px;
+    flex-shrink: 0;
+    height: 100vh;
+    background-color: #f4f4f4;
+    color: black;
+    border-right: 1px solid #ccc;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Main Area (Right Section) */
+.right {
+    flex: 1;
+    margin-left: 250px;
+    /* Same as sidebar width */
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #212121;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+/* If sidebar closes (optional future toggle support) */
+.sidebar.closed+.right {
+    margin-left: 70px;
+    /* shrink space when sidebar collapsed */
+}
+
 /* ---------------- Header ---------------- */
 
 *::selection {
@@ -18,6 +60,7 @@ body {
 }
 
 header {
+
     position: fixed;
     top: 0;
     width: 100%;
@@ -25,6 +68,7 @@ header {
     background-color: rgb(2, 240, 219);
     color: black;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+
 }
 
 header nav ul {
@@ -59,6 +103,12 @@ header nav ul li:first-child {
     width: 53%;
     box-shadow: 0 0 5px rgb(163, 163, 163);
     transition: all 0.2s ease;
+
+
+    left: calc(50% + 125px);
+    /* push half of sidebar width */
+    transform: translateX(-50%);
+
 }
 
 .input_box:focus-within {
@@ -124,9 +174,9 @@ header nav ul li:first-child {
 
 /* ---------------- Answer Area ---------------- */
 .ans-msg {
-    padding: 2% 22.5%;
+    padding: 2% 14%;
     position: fixed;
-    top: -4%;
+    top: -44px;
     overflow-y: scroll;
     overflow-x: hidden;
     z-index: 999;
@@ -261,8 +311,105 @@ header nav ul li:first-child {
     }
 }
 
+/* ------------------- side bar -------------------- */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: #02f0db;
+    /* border-right: 1px solid #ccc; */
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    padding: 0 7px;
+}
+
+.sidebar-header,
+sidebar-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: sticky;
+
+}
+
+.sidebar-header button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+
+}
+
+.sidebar-header .new-chat {
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    position: absolute;
+    bottom: -58%;
+    left: 3%;
+}
+
+.chat-body {
+    margin-top: 70px;
+    height: 71%;
+    background: #212121;
+    color: white;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.chat-body>p {
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid #ccc;
+    padding-left: 5%;
+}
+
+.chat-body .chat {
+    align-items: center;
+    /* padding: 10px; */
+    /* border-bottom: 1px solid #ccc; */
+    overflow-y: scroll;
+    overflow-x: auto;
+    /* height: 89%; */
+    scrollbar-width: thin;
+    scrollbar-color: #02f0db rgba(255, 255, 255, 0.1);
+}
+
+.chat-item {
+    overflow-x: hidden;
+    font-size: 18px;
+    cursor: pointer;
+}
+
 /* ---------------- Mobile Responsive ---------------- */
 @media (max-width: 768px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .left {
+        display: none;
+    }
+
+    .left {
+        width: 200px;
+    }
+
+    .right {
+        margin-left: 0px;
+    }
+
+    header {
+        width: 100%;
+        margin-left: 0px;
+    }
+
     header nav ul {
         padding: 10px 20px;
     }
@@ -270,6 +417,7 @@ header nav ul li:first-child {
     .input_box {
         width: 85%;
         padding: 10px 15px;
+        left: calc(50% + 0px);
     }
 
     .auto-textarea {
@@ -277,8 +425,12 @@ header nav ul li:first-child {
     }
 
     .ans-msg {
-        padding: 4% 10%;
+        padding: 4% 6%;
         height: calc(100vh - 160px);
+    }
+
+    .ai-msg {
+        padding: 24px 18px 18px 24px;
     }
 
     .welcome-msg {
@@ -291,14 +443,10 @@ header nav ul li:first-child {
     }
 
     .chat-container {
-        margin-top: 8%;
+        margin-top: 25%;
     }
-}
 
-@media (max-width: 768px) {
-    .chat-container {
-        margin-top: 17%;
-        background: red;
-        padding: 0 5%;
+    .chat-entry {
+        padding: 12px 6px;
     }
 }
